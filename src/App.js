@@ -1,24 +1,32 @@
 import { useState } from 'react';
 import 'antd/dist/antd.css';
-import { Layout } from 'antd';
-import Sidebar from "./components/Sidebar";
-import ComponentFooter from "./components/ComponentFooter";
-import Playground from './components/Playground';
 import ImageConfigurationContext from "./context";
+import { productList } from "./db";
+import {
+  BrowserRouter,
+  Routes,
+  Route
+} from "react-router-dom";
+
+import Main
+  from './components/Main';
+import ShopPage from './components/ShopPage';
+
 function App() {
 
-  const [selectedProduct , setSelectedProduct] = useState(null);
-  const [selectedRegions , setSelectedRegions] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedRegions, setSelectedRegions] = useState([]);
+  const [products, setProducts] = useState(productList)
 
-  return <ImageConfigurationContext.Provider value={{selectedProduct , setSelectedProduct , selectedRegions , setSelectedRegions}}>
-    <Layout style={{ height: "100vh" }}>
-      <Sidebar />
-      <Layout>
-        <Playground />
-        <ComponentFooter />
+  return <ImageConfigurationContext.Provider value={{ selectedProduct, setSelectedProduct, selectedRegions, setSelectedRegions, products, setProducts }}>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/shop" element={<ShopPage />} />
+      </Routes>
+    </BrowserRouter>
 
-      </Layout>
-    </Layout>
+
   </ImageConfigurationContext.Provider>
 }
 

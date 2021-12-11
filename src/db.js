@@ -1,4 +1,4 @@
-exports.products =[
+exports.productList =[
     {
         key : 1,
         label : "Apple glasses" ,

@@ -1,7 +1,7 @@
 
 import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
 import { Button, Layout, Menu } from 'antd';
-import { products } from '../db';
+
 import ImageConfigurationContext from '../context';
 import { useContext } from 'react';
 const { Sider } = Layout;
@@ -9,7 +9,7 @@ const { Sider } = Layout;
 
 const Sidebar = ()=>{
 
-   const {setSelectedProduct} = useContext(ImageConfigurationContext)
+   const {setSelectedProduct , products} = useContext(ImageConfigurationContext)
 
     return  <Sider
     theme="dark"
@@ -25,7 +25,7 @@ const Sidebar = ()=>{
   >
     <Menu theme={"dark"} mode="inline" style={{marginTop : 30}}>
     <Menu.Item>
-        <p><h3 style={{color : "white"}}>Select product to tag</h3></p>
+        <p><h3 style={{color : "white"}}>Select product</h3></p>
       </Menu.Item>
       <hr/>
     {products.map(el=>{
