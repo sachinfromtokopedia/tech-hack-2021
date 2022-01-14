@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
+import {useNavigate} from 'react-router-dom'
 import { Layout, Input, Card, Typography, Row, Col, Button, Tooltip, List } from 'antd';
 import RegionSelect from "react-region-select";
 import { CloseCircleFilled, UpSquareFilled } from "@ant-design/icons";
@@ -17,7 +18,7 @@ const { Search } = Input;
 
 
 const Dashboard = () => {
-  let { selectedProduct : mainProduct } = useContext(ImageConfigurationContext);
+  let { selectedProduct : mainProduct ,setProducts } = useContext(ImageConfigurationContext);
   // const [mainProduct, setMainProduct] = useState(null);
   const [taggedProducts, setTaggedProducts] = useState([]);
   const [selectedRegions, setSelectedRegions] = useState([]);
@@ -25,6 +26,7 @@ const Dashboard = () => {
   const[showSearchList, setSearchListVisibility] = useState(false);
   const[showSearchBar, setShowSearchBar] = useState(false);
   const [searchVal, setSearchVal] = useState('');
+  const navigate = useNavigate();
 
   const [selectedProductConfig, setSelectedProductConfig] = useState({});
 
@@ -50,6 +52,11 @@ const Dashboard = () => {
     setTaggedProducts(newTaggedProducts);
     setSelectedRegions([])
     setShowSearchBar(false)
+  }
+
+  const handleNavigate =()=>{
+    setProducts(taggedProducts);
+    navigate('/shop')
   }
 
   const removeTaggedProduct= (productId) => {
@@ -163,7 +170,7 @@ const Dashboard = () => {
 
   }
 
-  const { product, width, height } = mainProduct||{};
+  const { product, productWidth, productHeight } = mainProduct||{};
   const { imgUrl:mainImg} = product||{};
 
   const regionStyle = {
@@ -251,7 +258,7 @@ const Dashboard = () => {
             style={{ height: "100%", width: "100%" ,display:'flex'  , justifyContent : "center"}}
             constraint={true}
           >
-            <img src={mainImg} style={{ width, height }} />
+            <img src={mainImg} style={{ width:productWidth, height:productHeight }} />
           </RegionSelect>
             :null
           }  </div>
@@ -282,6 +289,7 @@ const Dashboard = () => {
         }        
         </Col>
       </Row>
+      <Button onClick={handleNavigate}>Save</Button>
     </Card>
   </Content>
 </Layout>
