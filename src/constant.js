@@ -1,6 +1,20 @@
 export const PRODUCT_LIST = [
 
-  {
+  { 
+    "productId": 1,
+    "type": "main",
+    "height": "500px",
+    "width": "600px",
+    "product": {
+        "key": 1,
+        "imgUrl": ['https://imagetagger-sachinfromtokopedia.vercel.app/dummy.jpeg'],
+        "label": "Speaker",
+        "cta": "https://tokopedia.com/",
+        "description": "list of all speakers,...."
+    }
+  },
+  { 
+    "productId": 2,
     "type": "main",
     "height": "500px",
     "width": "600px",
@@ -13,23 +27,12 @@ export const PRODUCT_LIST = [
     }
   },
   {
-    "type": "main",
-    "height": "500px",
-    "width": "600px",
-    "product": {
-        "key": 2,
-        "imgUrl": ['https://imagetagger-sachinfromtokopedia.vercel.app/dummy.jpeg'],
-        "label": "Speaker",
-        "cta": "https://tokopedia.com/",
-        "description": "list of all speakers,...."
-    }
-  },
-  {
+    "productId": 4,
     "type": "speaker",
     "height": "600px",
     "width": "600px",
     "product": {
-        "key": 3,
+        "key": 4,
         "imgUrl": [
           "https://images.tokopedia.net/img/cache/700/VqbcmM/2021/11/1/f1cefab2-ac5a-4038-bc0c-4dcf047fa4b9.jpg.webp?ect=4g",
           "https://images.tokopedia.net/img/cache/700/VqbcmM/2021/6/8/cbe8d530-a0c8-4566-87e5-7e4208c6cfdf.jpg.webp?ect=4g",
@@ -41,11 +44,12 @@ export const PRODUCT_LIST = [
     }
   },
   {
+    "productId": 5,
     "type": "speaker",
     "height": "600px",
     "width": "600px",
     "product": {
-        "key": 4,
+        "key": 5,
         "imgUrl": [
           "https://images.tokopedia.net/img/cache/700/VqbcmM/2021/12/21/9ab84226-4724-4194-93d9-b31d3f94ad0b.jpg.webp?ect=4g"
         ],

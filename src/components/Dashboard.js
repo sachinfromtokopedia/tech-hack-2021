@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Layout, Input, Card, Typography, Row, Col, Button } from 'antd';
+import { Layout, Input, Card, Typography, Row, Col, Button, Tooltip, List } from 'antd';
 import RegionSelect from "react-region-select";
 import { CloseCircleFilled } from '@ant-design/icons';
 
@@ -15,16 +15,32 @@ const Dashboard =()=>{
   const [selectedRegions, setSelectedRegions] = useState([]);
   const [searchList, setSearchList] = useState(PRODUCT_LIST);
   const[showSearchList, setSearchListVisibility] = useState(false);
+  const[showSearchBar, setShowSearchBar] = useState(false);
   const [searchVal, setSearchVal] = useState('');
 
   const onSearch = (val)=>{
     
   }
 
-  const deleteProduct = ()=>{
-    setMainProduct(null);
-    setTaggedProducts([]);
+  // const deleteProduct = ()=>{
+  //   setMainProduct(null);
+  //   setTaggedProducts([]);
+  // }
+
+  const tagProducts = (product)=>{
+    const newTaggedProducts = [...taggedProducts, product]
+    setTaggedProducts(newTaggedProducts);
+    setShowSearchBar(false)
   }
+
+  const removeTaggedProduct= (productId) => {
+    const newTaggedProducts = taggedProducts.filter(el => el.productId != productId )
+    setTaggedProducts(newTaggedProducts);
+  }
+
+ const showSearchForTag = () => {
+  setShowSearchBar(true)
+ }
 
   const handleInputChange = (e)=>{
     const { value } = e.target;
@@ -72,13 +88,51 @@ const Dashboard =()=>{
     setSearchVal('')
   }
 
+  const selectTaggedItem = () => {
+
+  }
+
   const { product, width, height } = mainProduct||{};
   const { imgUrl:mainImg} = product||{};
 
-const regionStyle = {
-  background: "rgba(0, 255, 0, 0.5)",
-  zIndex: 99
-}
+  const regionStyle = {
+    background: "rgba(0, 255, 0, 0.5)",
+    zIndex: 99
+  }
+
+  const renderDefaultProductList = () => {
+    return(
+      <List
+        bordered
+        dataSource={PRODUCT_LIST}
+        renderItem={item => (
+          <List.Item style={{ background: 'white'}} onClick={() => tagProducts(item)}>
+            <div style={{ display: 'flex'}} onClick={selectTaggedItem}>
+            <img style={{ marginRight: '10px'}}src={item.product.imgUrl} width='20px' height='20px'></img>
+            <div>{item.product.label}</div></div>
+          </List.Item>
+        )}
+      />
+    )
+  }
+  const renderTaggingUI = () => {
+  return(
+    <div style={{position: 'absolute', top: '35%', left: '20%', zIndex: '100', width: '50%'}}> 
+      <Button 
+        onClick={showSearchForTag} 
+        style={{ background: '#2196f3', color: 'white', borderRadius: '6px', padding: '6px'}}
+      >
+        Add
+      </Button>
+      {showSearchBar ? 
+        <div>
+          <Search placeholder='Search Product to Tag'/>
+          {renderDefaultProductList()}
+        </div> : null
+      }
+      </div>
+  )
+  }
 
   return <Layout style={{ height: "100vh", width: "100vw" }}>
   <Header className="header">
@@ -108,7 +162,13 @@ const regionStyle = {
       }
       
       <Row>
-        <Col span={24} style={{display: "flex", justifyContent: "center", margin:"100px 0px 40px 0px"}}>
+        <Col span={24} style={{display: "flex", justifyContent: "space-around", margin:"100px 0px 40px 0px",position: 'relative'}}>
+          <div style={{ position: 'relative'}}>{mainProduct ?  
+            <Tooltip placement="bottom" trigger={['hover']} overlay={<span>Select a section on image to tag</span>}>
+              <div style={{position: 'absolute', top: '10px', left: '10px', zIndex: '100', background: 'green', color: 'white', borderRadius: '6px', padding: '6px'}}>Tag More Products</div>
+            </Tooltip> : null
+          }
+          {mainProduct ? renderTaggingUI(): null}
           {
             mainProduct?
             <RegionSelect
@@ -121,16 +181,34 @@ const regionStyle = {
                 constraint={true}
 
            >
-                <img src={mainImg?.[0]??''} style={{width, height}}/>
+                <img src={mainImg}></img>
             </RegionSelect>
             :null
-          }  
+          }  </div>
+          <div style={{ width: '350px'}}>
+            {mainProduct ? 
+              <List
+              header={<div style={{ fontWeight: 'bold'}}>Tagged Products</div>}
+                bordered
+                dataSource={taggedProducts}
+                renderItem={item => (
+                  <List.Item style={{ background: 'white'}}>
+                    <div style={{ display: 'flex'}}>
+                      <img style={{ marginRight: '10px'}}src={item.product.imgUrl} width='20px' height='20px'></img>
+                      <div>{item.product.label}</div>
+                    </div>
+                    <div style={{ color: 'red', fontWeight: 'bold'}} onClick={()=> removeTaggedProduct(item.productId)}>X</div>
+                  </List.Item>
+              )}
+          />: null}
+          </div>
         </Col>
       </Row>
       <Row>
         <Col>
         {
-          mainProduct?<Button onClick={deleteProduct}>Delete Product</Button>:null
+          // // mainProduct?<Button onClick={deleteProduct}>Delete Product</Button>:null
+          // mainProduct?<Button onClick={taggedProducts}>Tag More Products</Button>:null
         }        
         </Col>
       </Row>
