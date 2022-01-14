@@ -1,10 +1,19 @@
 import React, { useState, useContext } from "react";
-import { Layout, Modal, message, List, Avatar } from "antd";
+import { Layout, Modal, message, List, Avatar, Menu, Dropdown } from "antd";
+import { RightSquareFilled, HeartFilled, createFromIconfontCN } from '@ant-design/icons';
+
 import { Card } from "antd";
 import ImageMapper from "react-image-mapper";
 import ImageConfigurationContext from "../context";
-
 import "./style.css";
+
+const IconFont = createFromIconfontCN({
+  scriptUrl: [
+    '//at.alicdn.com/t/font_1788044_0dwu4guekcwr.js', // icon-javascript, icon-java, icon-shoppingcart (overrided)
+    '//at.alicdn.com/t/font_1788592_a5xf2bdic3u.js', // icon-shoppingcart, icon-python
+  ],
+});
+
 
 const { Content } = Layout;
 const { Meta } = Card;
@@ -113,13 +122,14 @@ console.log(subproducts)
   };
 
   const updateModalContent = (id) => {
+    console.log(id);
     const foundData = subproducts.find((item) => item?.product?.key === id);
     setModalContent({
       ...foundData.product,
     });
-    toggleModal(true);
+    //toggleModal(true);
   };
-
+console.log({hoveredArea, modalContent});
   const removeFromCart = (id = 0) => {
     const removeIndexKey = id ? id : modalContent.key;
     const updatedData = cartData.filter((item) => item.key !== removeIndexKey);
@@ -136,23 +146,44 @@ console.log(subproducts)
           title={`Shop page`}
           style={{ padding: 5, height: "100%", position: "relative" }}
         >
+          <div style={{position:"relative"}}>
           <ImageMapper
             src={mainImg}
             width={productWidth}
             height={productHeight}
             map={generateAreas()}
-            onClick={(area) => updateModalContent(area.name)}
-            onMouseEnter={(area) => setHoverArea(area)}
-            onMouseLeave={() => setHoverArea(null)}
-          />
+            //onClick={(area) => updateModalContent(area.name)}
+            onFocus={(area) => updateModalContent(area.name)}
+            onMouseEnter={(area) => {
+              updateModalContent(area.name);
+              setHoverArea(area)}}
+            onImageClick={() => setHoverArea(null)}
+
+          >
+           </ImageMapper> 
           {hoveredArea && (
             <span
               className="tooltip"
               style={{ ...getTipPosition(hoveredArea) }}
             >
-              {hoveredArea && hoveredArea.title}
+              <Menu style={{display: "flex", flexDirection:"column"}}>
+                <Menu.Item onClick={()=>{
+          
+                  window.open(modalContent.cta, '_blank')
+                  setHoverArea(null);
+                }}>
+                  <span style={{fontWeight: 800, color: 'black', marginRight:"12px", display: "inline-block"}}>{modalContent.label}</span>
+                  <RightSquareFilled style={{ cursor:'pointer'}}/>
+                </Menu.Item>
+                <Menu style={{display: "flex", justifyContent:"space-around", width:"100%", padding: "2px 4px 8px", color:"red", fontSize:"12px", fontWeight:"600"}}>
+                {/* <span><HeartFilled /></span> */}
+                <span onClick={()=>addtoCart(modalContent.key)}>Add to Cart <IconFont type="icon-shoppingcart" /></span>  
+                </Menu>
+                
+              </Menu>
             </span>
           )}
+          </div>
           <List
             size="small"
             dataSource={cartData}
