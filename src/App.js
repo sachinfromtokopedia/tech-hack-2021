@@ -11,6 +11,7 @@ import {
 import Main
   from './components/Main';
 import ShopPage from './components/ShopPage';
+import Dashboard from './components/Dashboard';
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Main />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/shop" element={<ShopPage />} />
       </Routes>
     </BrowserRouter>
