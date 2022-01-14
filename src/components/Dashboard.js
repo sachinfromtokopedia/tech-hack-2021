@@ -196,14 +196,7 @@ const Dashboard = () => {
   const renderTaggingUI = () => {
   return(
     <div style={{position: 'absolute', zIndex: '100', width: '100%'}}> 
-      {/* <Button 
-        onClick={showSearchForTag} 
-        style={{ background: '#2196f3', color: 'white', borderRadius: '6px', padding: '6px'}}
-      >
-        Add
-      </Button> */}
-      {/* {showSearchBar ?  */}
-        <div>
+        <div style={{background: 'white', minWidth: '150px', width: '100%'}}>
           <Search placeholder='Search Product to Tag'/>
           {renderDefaultProductList()}
         </div>
@@ -212,33 +205,18 @@ const Dashboard = () => {
   )
   }
 
-  return <Layout style={{ height: "100vh", width: "100vw" }}>
+  return <Layout style={{ height: "100vh", width: "100vw" , background: 'white'}}>
   <Header className="header">
     <div className="logo"></div>
     <Title level={2} style={{ color:'#FFF', justifyContent: 'center', display: 'flex', alignItems:'center', height:'100%' }}>Image Mapper</Title>
   </Header>
-  <Content style={{ margin: '24px', minHeight: 280 }}>
-    <Card style={{ height: "100%", width: '100%', overflowY: "auto" }}>
-      
-      <Row>
-        {/* <Col span={12}>
-          <Search placeholder={mainProduct?"Search Tagged Product":"Seach Main Product"} onFocus={toggleSearchListVisibility} onSearch={onSearch} value={searchVal} onChange={handleInputChange} style={{ width: '100%' }} />
-        </Col> */}
-        {/* <Col span={4} offset={8}>
-          <Button type="primary" onClick={uploadImage}>Upload Button</Button>
-        </Col> */}
-      </Row>
-      <Row>
-        {/* <Col span={24}>
-          {
-            showSearchList && <SearchListModal searchList={searchList} selectProduct={selectProduct}/>
-          }
-        </Col> */}
-      </Row>
-      {
-        showSearchList && <CloseCircleFilled style={{margin:"20px", position: 'absolute',height: '62px',right: '20px',width: '2em',color: 'red'}} onClick={handleClose}/>
-      }
-      
+  <Row><Button style={{
+        position: 'absolute',
+        right: '0',
+        margin: '16px',
+        background: 'green',
+        color: 'white',
+  }} onClick={handleNavigate}>Save</Button></Row>
       <Row>
         <Col span={24} style={{display: "flex", justifyContent: "space-around", margin:"100px 0px 40px 0px",position: 'relative'}}>
           <div style={{ position: 'relative'}}>{mainProduct ?  
@@ -246,7 +224,6 @@ const Dashboard = () => {
               <div style={{position: 'absolute', top: '10px', left: '10px', zIndex: '100', background: 'green', color: 'white', borderRadius: '6px', padding: '6px'}}>Tag More Products</div>
             </Tooltip> : null
           }
-          {/* {mainProduct ? renderTaggingUI(): null} */}
           {
             mainProduct?
             <RegionSelect
@@ -265,11 +242,12 @@ const Dashboard = () => {
           <div style={{ width: '350px'}}>
             {mainProduct ? 
               <List
+                style={{ width: '100%'}}
               header={<div style={{ fontWeight: 'bold'}}>Tagged Products</div>}
                 bordered
                 dataSource={taggedProducts}
                 renderItem={item => (
-                  <List.Item style={{ background: 'white'}}>
+                  <List.Item style={{ background: 'white', width: '100%'}}>
                     <div style={{ display: 'flex'}}>
                       <img style={{ marginRight: '10px'}}src={item.product.imgUrl} width='20px' height='20px'></img>
                       <div>{item.product.label}</div>
@@ -281,17 +259,8 @@ const Dashboard = () => {
           </div>
         </Col>
       </Row>
-      <Row>
-        <Col>
-        {
-          // // mainProduct?<Button onClick={deleteProduct}>Delete Product</Button>:null
-          // mainProduct?<Button onClick={taggedProducts}>Tag More Products</Button>:null
-        }        
-        </Col>
-      </Row>
-      <Button onClick={handleNavigate}>Save</Button>
-    </Card>
-  </Content>
+    {/* </Card>
+  </Content> */}
 </Layout>
 }
 
