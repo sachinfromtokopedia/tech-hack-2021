@@ -13,7 +13,8 @@ import Main
 import ShopPage from './components/ShopPage';
 import Dashboard from './components/Dashboard';import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Dashboard from './components/Dashboard';
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import ProductList from './components/ProductList';
 
 function App() {

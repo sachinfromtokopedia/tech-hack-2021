@@ -1,18 +1,10 @@
-import React, { useEffect, useState } from "react";
-import {
-  Layout,
-  Input,
-  Card, List,
-  Typography,
-  Row,
-  Col,
-  Button
-
-} from "antd";
+import React, { useEffect, useState, useContext } from 'react';
+import { Layout, Input, Card, Typography, Row, Col, Button, Tooltip, List } from 'antd';
 import RegionSelect from "react-region-select";
 import { CloseCircleFilled, UpSquareFilled } from "@ant-design/icons";
 
 import Select from "react-select";
+import ImageConfigurationContext from '../context';
 import { PRODUCT_LIST } from "../constant.js";
 import SearchListModal from "./SearchList.js";
 
@@ -23,14 +15,16 @@ const { Header, Content } = Layout;
 
 const { Search } = Input;
 
+
 const Dashboard = () => {
-  const [mainProduct, setMainProduct] = useState(null);
+  let { selectedProduct : mainProduct } = useContext(ImageConfigurationContext);
+  // const [mainProduct, setMainProduct] = useState(null);
   const [taggedProducts, setTaggedProducts] = useState([]);
   const [selectedRegions, setSelectedRegions] = useState([]);
   const [searchList, setSearchList] = useState(PRODUCT_LIST);
-  const [showSearchList, setSearchListVisibility] = useState(false);
-  const [searchVal, setSearchVal] = useState("");
-  // console.log("****",  )
+  const[showSearchList, setSearchListVisibility] = useState(false);
+  const[showSearchBar, setShowSearchBar] = useState(false);
+  const [searchVal, setSearchVal] = useState('');
 
   const [selectedProductConfig, setSelectedProductConfig] = useState({});
 
@@ -45,11 +39,34 @@ const Dashboard = () => {
     })
   );
 
+  // const deleteProduct = ()=>{
+  //   setMainProduct(null);
+  //   setTaggedProducts([]);
+  // }
+
+  const tagProducts = (product)=>{
+    const region = selectedRegions?.[0] || {};
+    const newTaggedProducts = [...taggedProducts, {...product, x: region.x, y: region.y, width: region.width, height: region.height }]
+    setTaggedProducts(newTaggedProducts);
+    setSelectedRegions([])
+    setShowSearchBar(false)
+  }
+
+  const removeTaggedProduct= (productId) => {
+    const newTaggedProducts = taggedProducts.filter(el => el.productId != productId )
+    setTaggedProducts(newTaggedProducts);
+  }
+
+ const showSearchForTag = () => {
+  setShowSearchBar(true)
+ }
+
   const onSearch = () => { };
-  const deleteProduct = () => {
-    setMainProduct(null);
-    setTaggedProducts([]);
-  };
+
+  // const deleteProduct = () => {
+  //   setMainProduct(null);
+  //   setTaggedProducts([]);
+  // };
 
   const handleInputChange = (e) => {
     const { value } = e.target;
@@ -84,12 +101,12 @@ const Dashboard = () => {
     console.log(result);
   };
 
-  const selectProduct = (info) => {
-    if (!mainProduct) {
-      setMainProduct(info);
-    }
-    toggleSearchListVisibility();
-  };
+  // const selectProduct = (info) => {
+  //   if (!mainProduct) {
+  //     setMainProduct(info);
+  //   }
+  //   toggleSearchListVisibility();
+  // };
 
   const regionRenderer = (regionProps) => {
     // if(!selectedProduct) return;
@@ -121,7 +138,8 @@ const Dashboard = () => {
             {/* <InfoCircleFilled title={getRegionLabel(regionProps.data.index)} onClick={() => { }} /> */}
             {/* <p>{getRegionLabel(regionProps.data.index)}</p> */}
           </div>
-          <div
+          {renderTaggingUI()}
+          {/* <div
             style={{ position: "absolute", width: "100%", bottom: "-1.5em" }}
           >
             <Select
@@ -134,7 +152,7 @@ const Dashboard = () => {
                 });
               }}
             />
-          </div>
+          </div> */}
         </>
       );
     } else {
@@ -143,6 +161,7 @@ const Dashboard = () => {
   };
 
   function onRegionChange(regions) {
+    //showSearchForTag(true)
     setSelectedRegions(
       regions.map((el) => {
         return { ...el, product: el.product };
@@ -156,137 +175,132 @@ const Dashboard = () => {
     setSearchVal("");
   };
 
+  const selectTaggedItem = () => {
 
-  const { product, width, height } = mainProduct || {};
-  const { imgUrl: mainImg } = product || {};
+  }
+
+  const { product, width, height } = mainProduct||{};
+  const { imgUrl:mainImg} = product||{};
 
   const regionStyle = {
     background: "rgba(0, 255, 0, 0.5)",
-    zIndex: 99,
-  };
+    zIndex: 99
+  }
 
-  return (
-    <Layout style={{ height: "100vh", width: "100vw" }}>
-      <Header className="header">
-        <div className="logo"></div>
-        <Title
-          level={2}
-          style={{
-            color: "#FFF",
-            justifyContent: "center",
-            display: "flex",
-            alignItems: "center",
-            height: "100%",
-          }}
-        >
-          Image Mapper
-        </Title>
-      </Header>
-      <Content style={{ margin: "24px", minHeight: 280 }}>
-        <Card style={{ height: "100%", width: "100%", overflowY: "auto" }}>
-          <Row>
-            <Col span={12}>
-              <Search
-                placeholder={
-                  mainProduct ? "Search Tagged Product" : "Search product image to tag"
-                }
-                onFocus={toggleSearchListVisibility}
-                onSearch={onSearch}
-                value={searchVal}
-                onChange={handleInputChange}
-                style={{ width: "100%" }}
-              />
-            </Col>
+  const renderDefaultProductList = () => {
+    return(
+      <List
+        bordered
+        dataSource={PRODUCT_LIST}
+        renderItem={item => (
+          <List.Item style={{ background: 'white'}} onClick={() => tagProducts(item)}>
+            <div style={{ display: 'flex'}} onClick={selectTaggedItem}>
+            <img style={{ marginRight: '10px'}}src={item.product.imgUrl} width='20px' height='20px'></img>
+            <div>{item.product.label}</div></div>
+          </List.Item>
+        )}
+      />
+    )
+  }
+  const renderTaggingUI = () => {
+  return(
+    <div style={{position: 'absolute', top: '35%', left: '20%', zIndex: '100', width: '50%'}}> 
+      {/* <Button 
+        onClick={showSearchForTag} 
+        style={{ background: '#2196f3', color: 'white', borderRadius: '6px', padding: '6px'}}
+      >
+        Add
+      </Button> */}
+      {/* {showSearchBar ?  */}
+        <div>
+          <Search placeholder='Search Product to Tag'/>
+          {renderDefaultProductList()}
+        </div> : null
+      {/* } */}
+      </div>
+  )
+  }
 
-            <Col span={2} offset={2}>
-              {mainProduct ? (
-                <Button onClick={deleteProduct}>Tag other product</Button>
-              ) : null}
-            </Col>
-            <Col span={2} offset={2}>
-              <Button type="primary" onClick={exportData}>
-                Export data
-              </Button>
-            </Col>
-
-
-          </Row>
-          <Row>
-            <Col span={24}>
-              {showSearchList && (
-                <SearchListModal
-                  searchList={searchList}
-                  selectProduct={selectProduct}
-                />
+  return <Layout style={{ height: "100vh", width: "100vw" }}>
+  <Header className="header">
+    <div className="logo"></div>
+    <Title level={2} style={{ color:'#FFF', justifyContent: 'center', display: 'flex', alignItems:'center', height:'100%' }}>Image Mapper</Title>
+  </Header>
+  <Content style={{ margin: '24px', minHeight: 280 }}>
+    <Card style={{ height: "100%", width: '100%', overflowY: "auto" }}>
+      
+      <Row>
+        {/* <Col span={12}>
+          <Search placeholder={mainProduct?"Search Tagged Product":"Seach Main Product"} onFocus={toggleSearchListVisibility} onSearch={onSearch} value={searchVal} onChange={handleInputChange} style={{ width: '100%' }} />
+        </Col> */}
+        {/* <Col span={4} offset={8}>
+          <Button type="primary" onClick={uploadImage}>Upload Button</Button>
+        </Col> */}
+      </Row>
+      <Row>
+        {/* <Col span={24}>
+          {
+            showSearchList && <SearchListModal searchList={searchList} selectProduct={selectProduct}/>
+          }
+        </Col> */}
+      </Row>
+      {
+        showSearchList && <CloseCircleFilled style={{margin:"20px", position: 'absolute',height: '62px',right: '20px',width: '2em',color: 'red'}} onClick={handleClose}/>
+      }
+      
+      <Row>
+        <Col span={24} style={{display: "flex", justifyContent: "space-around", margin:"100px 0px 40px 0px",position: 'relative'}}>
+          <div style={{ position: 'relative'}}>{mainProduct ?  
+            <Tooltip placement="bottom" trigger={['hover']} overlay={<span>Select a section on image to tag</span>}>
+              <div style={{position: 'absolute', top: '10px', left: '10px', zIndex: '100', background: 'green', color: 'white', borderRadius: '6px', padding: '6px'}}>Tag More Products</div>
+            </Tooltip> : null
+          }
+          {/* {mainProduct ? renderTaggingUI(): null} */}
+          {
+            mainProduct?
+            <RegionSelect
+            maxRegions={100}
+            regions={selectedRegions}
+            regionStyle={regionStyle}
+            onChange={onRegionChange}
+            regionRenderer={regionRenderer}
+            style={{ height: "100%", width: "100%" ,display:'flex'  , justifyContent : "center"}}
+            constraint={true}
+          >
+            <img src={mainImg} style={{ width, height }} />
+          </RegionSelect>
+            :null
+          }  </div>
+          <div style={{ width: '350px'}}>
+            {mainProduct ? 
+              <List
+              header={<div style={{ fontWeight: 'bold'}}>Tagged Products</div>}
+                bordered
+                dataSource={taggedProducts}
+                renderItem={item => (
+                  <List.Item style={{ background: 'white'}}>
+                    <div style={{ display: 'flex'}}>
+                      <img style={{ marginRight: '10px'}}src={item.product.imgUrl} width='20px' height='20px'></img>
+                      <div>{item.product.label}</div>
+                    </div>
+                    <div style={{ color: 'red', fontWeight: 'bold'}} onClick={()=> removeTaggedProduct(item.productId)}>X</div>
+                  </List.Item>
               )}
-            </Col>
-          </Row>
-          {showSearchList && (
-            <CloseCircleFilled
-              style={{
-                margin: "20px",
-                position: "absolute",
-                height: "62px",
-                right: "20px",
-                width: "2em",
-                color: "red",
-              }}
-              onClick={handleClose}
-            />
-          )}
+          />: null}
+          </div>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+        {
+          // // mainProduct?<Button onClick={deleteProduct}>Delete Product</Button>:null
+          // mainProduct?<Button onClick={taggedProducts}>Tag More Products</Button>:null
+        }        
+        </Col>
+      </Row>
+    </Card>
+  </Content>
+</Layout>
+}
 
-          <Row>
-            <Col
-              span={12}
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                margin: "100px 0px 40px 0px",
-              }}
-            >
-
-              {mainProduct ? (
-                <RegionSelect
-                  maxRegions={100}
-                  regions={selectedRegions}
-                  regionStyle={regionStyle}
-                  onChange={onRegionChange}
-                  regionRenderer={regionRenderer}
-                  style={{ height: "100%", width: "100%" ,display:'flex'  , justifyContent : "center"}}
-                  constraint={true}
-                >
-                  <img src={mainImg?.[0] ?? ""} style={{ width, height }} />
-                </RegionSelect>
-              ) : null}
-            </Col>
-
-            {mainProduct ?
-              <Col span={12} style={{
-
-                margin: "100px 0px 40px 0px",
-              }}>
-
-                <List
-                  header={<div><b>Products Tagged</b></div>}
-                  bordered
-                  dataSource={Object.keys(selectedProductConfig)}
-                  renderItem={key => (
-                    <List.Item>
-                        
-                      {selectedProductConfig[key].product.label}
-
-                    </List.Item>
-                  )}
-                />
-              </Col> : null}
-
-
-          </Row>
-
-        </Card>
-      </Content>
-    </Layout>
-  );
-};
-
-export default Dashboard;
+export default Dashboard
