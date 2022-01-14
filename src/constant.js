@@ -1,6 +1,7 @@
 export const PRODUCT_LIST = [
 
   {
+    "productId": 1,
     "type": "main",
     "height": "500px",
     "width": "600px",
@@ -13,6 +14,7 @@ export const PRODUCT_LIST = [
     }
   },
   {
+    "productId": 2,
     "type": "main",
     "height": "500px",
     "width": "600px",
@@ -25,6 +27,7 @@ export const PRODUCT_LIST = [
     }
   },
   {
+    "productId": 3,
     "type": "speaker",
     "height": "600px",
     "width": "600px",
@@ -41,6 +44,7 @@ export const PRODUCT_LIST = [
     }
   },
   {
+    "productId": 4,
     "type": "speaker",
     "height": "600px",
     "width": "600px",

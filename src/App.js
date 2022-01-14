@@ -11,8 +11,13 @@ import {
 import Main
   from './components/Main';
 import ShopPage from './components/ShopPage';
+<<<<<<< HEAD
 import Dashboard from './components/Dashboard';import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+=======
+import Dashboard from './components/Dashboard';
+import ProductList from './components/ProductList';
+>>>>>>> 3f691f6d473b6d955e555be10bd47fe687bade4e
 
 function App() {
   toast.configure()
@@ -24,6 +29,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Main />} />
+        <Route path="/list" element={<ProductList />} />
+
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/shop" element={<ShopPage />} />
       </Routes>
