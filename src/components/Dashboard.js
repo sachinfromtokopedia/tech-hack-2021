@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import {
   Layout,
   Input,
-  Card,
+  Card, List,
   Typography,
   Row,
   Col,
   Button
-  
+
 } from "antd";
 import RegionSelect from "react-region-select";
-import { CloseCircleFilled } from "@ant-design/icons";
+import { CloseCircleFilled, UpSquareFilled } from "@ant-design/icons";
 
 import Select from "react-select";
 import { PRODUCT_LIST } from "../constant.js";
@@ -34,19 +34,18 @@ const Dashboard = () => {
 
   const [selectedProductConfig, setSelectedProductConfig] = useState({});
 
-  let console = {
-    log: (data) => {
-      //for production comment this
-      // window.console.log(data)
-    },
-  };
+  // production logger
+  // let console = {
+  //   log: (data) => {
+  //   },
+  // };
   const [productOption, setProductOptions] = useState(
     PRODUCT_LIST.map((el) => {
       return { label: el.product.label, value: el };
     })
   );
 
-  const onSearch = () => {};
+  const onSearch = () => { };
   const deleteProduct = () => {
     setMainProduct(null);
     setTaggedProducts([]);
@@ -128,7 +127,7 @@ const Dashboard = () => {
             <Select
               options={productOption}
               onChange={(data) => {
-                console.log("haha", selectedProductConfig);
+                console.log("haha" , selectedProductConfig)
                 setSelectedProductConfig({
                   ...selectedProductConfig,
                   [regionProps.data.index]: data.value,
@@ -143,10 +142,6 @@ const Dashboard = () => {
     }
   };
 
-  useEffect(() => {
-    console.log("!!!!", selectedProductConfig);
-  }, [selectedProductConfig]);
-
   function onRegionChange(regions) {
     setSelectedRegions(
       regions.map((el) => {
@@ -160,6 +155,7 @@ const Dashboard = () => {
     setSearchList(PRODUCT_LIST);
     setSearchVal("");
   };
+
 
   const { product, width, height } = mainProduct || {};
   const { imgUrl: mainImg } = product || {};
@@ -201,19 +197,19 @@ const Dashboard = () => {
                 style={{ width: "100%" }}
               />
             </Col>
-            
+
             <Col span={2} offset={2}>
-            {mainProduct ? (
+              {mainProduct ? (
                 <Button onClick={deleteProduct}>Tag other product</Button>
               ) : null}
             </Col>
- <Col span={2} offset={2}>
+            <Col span={2} offset={2}>
               <Button type="primary" onClick={exportData}>
                 Export data
               </Button>
             </Col>
 
-           
+
           </Row>
           <Row>
             <Col span={24}>
@@ -239,16 +235,16 @@ const Dashboard = () => {
             />
           )}
 
-          <Row>    
+          <Row>
             <Col
-              span={24}
+              span={12}
               style={{
                 display: "flex",
                 justifyContent: "center",
                 margin: "100px 0px 40px 0px",
               }}
             >
-              
+
               {mainProduct ? (
                 <RegionSelect
                   maxRegions={100}
@@ -256,15 +252,37 @@ const Dashboard = () => {
                   regionStyle={regionStyle}
                   onChange={onRegionChange}
                   regionRenderer={regionRenderer}
-                  style={{ height: "100%", width: "100%",display:"flex",justifyContent:"center" }}
+                  style={{ height: "100%", width: "100%" ,display:'flex'  , justifyContent : "center"}}
                   constraint={true}
                 >
                   <img src={mainImg?.[0] ?? ""} style={{ width, height }} />
                 </RegionSelect>
               ) : null}
             </Col>
+
+            {mainProduct ?
+              <Col span={12} style={{
+
+                margin: "100px 0px 40px 0px",
+              }}>
+
+                <List
+                  header={<div><b>Products Tagged</b></div>}
+                  bordered
+                  dataSource={Object.keys(selectedProductConfig)}
+                  renderItem={key => (
+                    <List.Item>
+                        
+                      {selectedProductConfig[key].product.label}
+
+                    </List.Item>
+                  )}
+                />
+              </Col> : null}
+
+
           </Row>
-        
+
         </Card>
       </Content>
     </Layout>
