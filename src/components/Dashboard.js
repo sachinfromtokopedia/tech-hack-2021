@@ -135,24 +135,8 @@ const Dashboard = () => {
                 setSelectedProductConfig(selectedProducts);
               }}
             />
-            {/* <InfoCircleFilled title={getRegionLabel(regionProps.data.index)} onClick={() => { }} /> */}
-            {/* <p>{getRegionLabel(regionProps.data.index)}</p> */}
           </div>
-          {renderTaggingUI()}
-          {/* <div
-            style={{ position: "absolute", width: "100%", bottom: "-1.5em" }}
-          >
-            <Select
-              options={productOption}
-              onChange={(data) => {
-                console.log("haha" , selectedProductConfig)
-                setSelectedProductConfig({
-                  ...selectedProductConfig,
-                  [regionProps.data.index]: data.value,
-                });
-              }}
-            />
-          </div> */}
+          <div style={{ position: "absolute", left: "0%", bottom: "0", width: '100%' }}>{renderTaggingUI()}</div>
         </>
       );
     } else {
@@ -204,7 +188,7 @@ const Dashboard = () => {
   }
   const renderTaggingUI = () => {
   return(
-    <div style={{position: 'absolute', top: '35%', left: '20%', zIndex: '100', width: '50%'}}> 
+    <div style={{position: 'absolute', zIndex: '100', width: '100%'}}> 
       {/* <Button 
         onClick={showSearchForTag} 
         style={{ background: '#2196f3', color: 'white', borderRadius: '6px', padding: '6px'}}
@@ -215,7 +199,7 @@ const Dashboard = () => {
         <div>
           <Search placeholder='Search Product to Tag'/>
           {renderDefaultProductList()}
-        </div> : null
+        </div>
       {/* } */}
       </div>
   )
