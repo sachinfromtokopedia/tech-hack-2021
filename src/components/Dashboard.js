@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Layout,
   Input,
@@ -101,6 +101,12 @@ const Dashboard = () => {
                     (el) => el.data.index !== regionProps.data.index
                   )
                 );
+
+                console.log("****selected products" , selectedProductConfig[regionProps.data.index] , regionProps.data.index)
+
+                let selectedProducts = { ...selectedProductConfig };
+                delete selectedProducts[regionProps.data.index];
+                setSelectedProductConfig(selectedProducts);
               }}
             />
             {/* <InfoCircleFilled title={getRegionLabel(regionProps.data.index)} onClick={() => { }} /> */}
@@ -112,9 +118,10 @@ const Dashboard = () => {
             <Select
               options={productOption}
               onChange={(data) => {
+                console.log("haha" , selectedProductConfig);
                 setSelectedProductConfig({
                   ...selectedProductConfig,
-                  [regionProps.index]: data.value,
+                  [regionProps.data.index]: data.value,
                 });
               }}
             />
@@ -125,6 +132,11 @@ const Dashboard = () => {
       console.log(regionProps);
     }
   };
+
+  useEffect(()=>{
+
+    console.log("!!!!" , selectedProductConfig)
+  } , [selectedProductConfig])
 
   function onRegionChange(regions) {
     setSelectedRegions(
