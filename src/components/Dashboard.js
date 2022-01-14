@@ -6,8 +6,8 @@ import {
   Typography,
   Row,
   Col,
-  Button,
-  notification,
+  Button
+  
 } from "antd";
 import RegionSelect from "react-region-select";
 import { CloseCircleFilled } from "@ant-design/icons";
@@ -192,7 +192,7 @@ const Dashboard = () => {
             <Col span={12}>
               <Search
                 placeholder={
-                  mainProduct ? "Search Tagged Product" : "Seach Main Product"
+                  mainProduct ? "Search Tagged Product" : "Search product image to tag"
                 }
                 onFocus={toggleSearchListVisibility}
                 onSearch={onSearch}
@@ -201,11 +201,19 @@ const Dashboard = () => {
                 style={{ width: "100%" }}
               />
             </Col>
-            <Col span={4} offset={8}>
+            
+            <Col span={2} offset={2}>
+            {mainProduct ? (
+                <Button onClick={deleteProduct}>Tag other product</Button>
+              ) : null}
+            </Col>
+ <Col span={2} offset={2}>
               <Button type="primary" onClick={exportData}>
                 Export data
               </Button>
             </Col>
+
+           
           </Row>
           <Row>
             <Col span={24}>
@@ -231,7 +239,7 @@ const Dashboard = () => {
             />
           )}
 
-          <Row>
+          <Row>    
             <Col
               span={24}
               style={{
@@ -240,6 +248,7 @@ const Dashboard = () => {
                 margin: "100px 0px 40px 0px",
               }}
             >
+              
               {mainProduct ? (
                 <RegionSelect
                   maxRegions={100}
@@ -247,7 +256,7 @@ const Dashboard = () => {
                   regionStyle={regionStyle}
                   onChange={onRegionChange}
                   regionRenderer={regionRenderer}
-                  style={{ height: "100%", width: "100%" }}
+                  style={{ height: "100%", width: "100%",display:"flex",justifyContent:"center" }}
                   constraint={true}
                 >
                   <img src={mainImg?.[0] ?? ""} style={{ width, height }} />
@@ -255,13 +264,7 @@ const Dashboard = () => {
               ) : null}
             </Col>
           </Row>
-          <Row>
-            <Col>
-              {mainProduct ? (
-                <Button onClick={deleteProduct}>Delete Product</Button>
-              ) : null}
-            </Col>
-          </Row>
+        
         </Card>
       </Content>
     </Layout>
