@@ -1,26 +1,43 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Layout, Input, Card, Typography, Row, Col, Button, Tooltip, List } from 'antd';
 import RegionSelect from "react-region-select";
-import { CloseCircleFilled } from '@ant-design/icons';
+import { CloseCircleFilled, UpSquareFilled } from "@ant-design/icons";
 
-import { PRODUCT_LIST } from '../constant.js';
-import SearchListModal from './SearchList.js';
-const { Title } = Typography
+import Select from "react-select";
+import ImageConfigurationContext from '../context';
+import { PRODUCT_LIST } from "../constant.js";
+import SearchListModal from "./SearchList.js";
+
+import { toast } from "react-toastify";
+import { DeleteFilled, InfoCircleFilled } from "@ant-design/icons";
+const { Title } = Typography;
 const { Header, Content } = Layout;
+
 const { Search } = Input;
 
-const Dashboard =()=>{
-  const[mainProduct, setMainProduct] = useState(null);
-  const[taggedProducts, setTaggedProducts] = useState([]);
+
+const Dashboard = () => {
+  let { selectedProduct : mainProduct } = useContext(ImageConfigurationContext);
+  // const [mainProduct, setMainProduct] = useState(null);
+  const [taggedProducts, setTaggedProducts] = useState([]);
   const [selectedRegions, setSelectedRegions] = useState([]);
   const [searchList, setSearchList] = useState(PRODUCT_LIST);
   const[showSearchList, setSearchListVisibility] = useState(false);
   const[showSearchBar, setShowSearchBar] = useState(false);
   const [searchVal, setSearchVal] = useState('');
 
-  const onSearch = (val)=>{
-    
-  }
+  const [selectedProductConfig, setSelectedProductConfig] = useState({});
+
+  // production logger
+  // let console = {
+  //   log: (data) => {
+  //   },
+  // };
+  const [productOption, setProductOptions] = useState(
+    PRODUCT_LIST.map((el) => {
+      return { label: el.product.label, value: el };
+    })
+  );
 
   // const deleteProduct = ()=>{
   //   setMainProduct(null);
@@ -28,8 +45,10 @@ const Dashboard =()=>{
   // }
 
   const tagProducts = (product)=>{
-    const newTaggedProducts = [...taggedProducts, product]
+    const region = selectedRegions?.[0] || {};
+    const newTaggedProducts = [...taggedProducts, {...product, x: region.x, y: region.y, width: region.width, height: region.height }]
     setTaggedProducts(newTaggedProducts);
+    setSelectedRegions([])
     setShowSearchBar(false)
   }
 
@@ -42,51 +61,119 @@ const Dashboard =()=>{
   setShowSearchBar(true)
  }
 
-  const handleInputChange = (e)=>{
+  const onSearch = () => { };
+
+  // const deleteProduct = () => {
+  //   setMainProduct(null);
+  //   setTaggedProducts([]);
+  // };
+
+  const handleInputChange = (e) => {
     const { value } = e.target;
-    const newSearchList = PRODUCT_LIST.filter((productInfo)=>{
-      const { product: {label}} = productInfo;
-      if(label.toLocaleLowerCase().includes(value)){
-        return true
+    const newSearchList = PRODUCT_LIST.filter((productInfo) => {
+      const {
+        product: { label },
+      } = productInfo;
+      if (label.toLocaleLowerCase().includes(value)) {
+        return true;
       }
       return false;
-    })
+    });
     setSearchVal(value);
     setSearchList(newSearchList);
-  }
+  };
 
-  const toggleSearchListVisibility = ()=>{
-    setSearchListVisibility(val=>!val);
-  }
+  const toggleSearchListVisibility = () => {
+    setSearchListVisibility((val) => !val);
+  };
 
-  const uploadImage = ()=>{
-
-  }
-
-  const selectProduct = (info)=>{
-    if(!mainProduct){
-      setMainProduct(info);
+  const exportData = () => {
+    // normalizing data
+    if (Object.keys(selectedProductConfig).length !== selectedRegions.length) {
+      toast("Please select all products!");
+      return 0;
     }
-    toggleSearchListVisibility();
+
+    let result = selectedRegions.map((el) => {
+      return { ...el, ...selectedProductConfig[el.data.index] };
+    });
+
+    console.log(result);
+  };
+
+  // const selectProduct = (info) => {
+  //   if (!mainProduct) {
+  //     setMainProduct(info);
+  //   }
+  //   toggleSearchListVisibility();
+  // };
+
+  const regionRenderer = (regionProps) => {
+    // if(!selectedProduct) return;
+
+    if (!regionProps.isChanging) {
+      return (
+        <>
+          <div style={{ position: "absolute", left: "100%", top: "-17px" }}>
+            <DeleteFilled
+              style={{ color: "red" }}
+              onClick={() => {
+                setSelectedRegions(
+                  selectedRegions.filter(
+                    (el) => el.data.index !== regionProps.data.index
+                  )
+                );
+
+                console.log(
+                  "****selected products",
+                  selectedProductConfig[regionProps.data.index],
+                  regionProps.data.index
+                );
+
+                let selectedProducts = { ...selectedProductConfig };
+                delete selectedProducts[regionProps.data.index];
+                setSelectedProductConfig(selectedProducts);
+              }}
+            />
+            {/* <InfoCircleFilled title={getRegionLabel(regionProps.data.index)} onClick={() => { }} /> */}
+            {/* <p>{getRegionLabel(regionProps.data.index)}</p> */}
+          </div>
+          {renderTaggingUI()}
+          {/* <div
+            style={{ position: "absolute", width: "100%", bottom: "-1.5em" }}
+          >
+            <Select
+              options={productOption}
+              onChange={(data) => {
+                console.log("haha" , selectedProductConfig)
+                setSelectedProductConfig({
+                  ...selectedProductConfig,
+                  [regionProps.data.index]: data.value,
+                });
+              }}
+            />
+          </div> */}
+        </>
+      );
+    } else {
+      console.log(regionProps);
+    }
+  };
+
+  function onRegionChange(regions) {
+    //showSearchForTag(true)
+    setSelectedRegions(
+      regions.map((el) => {
+        return { ...el, product: el.product };
+      })
+    );
   }
 
-  const regionRenderer = (regions)=>{
-    console.log(regions);
-    setSelectedRegions(regions.map(el => {
-      return { ...el, product: el.product ? el.product : mainProduct }
-  }))
-  }
-
-  const onRegionChange = (val)=>{
-    console.log('region change');
-    console.log(val);
-  }
-
-  const handleClose = ()=>{
+  const handleClose = () => {
     toggleSearchListVisibility();
     setSearchList(PRODUCT_LIST);
-    setSearchVal('')
-  }
+    setSearchVal("");
+  };
 
   const selectTaggedItem = () => {
 
@@ -118,18 +205,18 @@ const Dashboard =()=>{
   const renderTaggingUI = () => {
   return(
     <div style={{position: 'absolute', top: '35%', left: '20%', zIndex: '100', width: '50%'}}> 
-      <Button 
+      {/* <Button 
         onClick={showSearchForTag} 
         style={{ background: '#2196f3', color: 'white', borderRadius: '6px', padding: '6px'}}
       >
         Add
-      </Button>
-      {showSearchBar ? 
+      </Button> */}
+      {/* {showSearchBar ?  */}
         <div>
           <Search placeholder='Search Product to Tag'/>
           {renderDefaultProductList()}
         </div> : null
-      }
+      {/* } */}
       </div>
   )
   }
@@ -143,19 +230,19 @@ const Dashboard =()=>{
     <Card style={{ height: "100%", width: '100%', overflowY: "auto" }}>
       
       <Row>
-        <Col span={12}>
+        {/* <Col span={12}>
           <Search placeholder={mainProduct?"Search Tagged Product":"Seach Main Product"} onFocus={toggleSearchListVisibility} onSearch={onSearch} value={searchVal} onChange={handleInputChange} style={{ width: '100%' }} />
-        </Col>
-        <Col span={4} offset={8}>
+        </Col> */}
+        {/* <Col span={4} offset={8}>
           <Button type="primary" onClick={uploadImage}>Upload Button</Button>
-        </Col>
+        </Col> */}
       </Row>
       <Row>
-        <Col span={24}>
+        {/* <Col span={24}>
           {
             showSearchList && <SearchListModal searchList={searchList} selectProduct={selectProduct}/>
           }
-        </Col>
+        </Col> */}
       </Row>
       {
         showSearchList && <CloseCircleFilled style={{margin:"20px", position: 'absolute',height: '62px',right: '20px',width: '2em',color: 'red'}} onClick={handleClose}/>
@@ -168,21 +255,20 @@ const Dashboard =()=>{
               <div style={{position: 'absolute', top: '10px', left: '10px', zIndex: '100', background: 'green', color: 'white', borderRadius: '6px', padding: '6px'}}>Tag More Products</div>
             </Tooltip> : null
           }
-          {mainProduct ? renderTaggingUI(): null}
+          {/* {mainProduct ? renderTaggingUI(): null} */}
           {
             mainProduct?
             <RegionSelect
-                maxRegions={null}
-                regions={selectedRegions}
-                regionStyle={regionStyle}
-                onChange={onRegionChange}
-                regionRenderer={regionRenderer}
-                style={{ height: "100%", width: "100%" }}
-                constraint={true}
-
-           >
-                <img src={mainImg}></img>
-            </RegionSelect>
+            maxRegions={100}
+            regions={selectedRegions}
+            regionStyle={regionStyle}
+            onChange={onRegionChange}
+            regionRenderer={regionRenderer}
+            style={{ height: "100%", width: "100%" ,display:'flex'  , justifyContent : "center"}}
+            constraint={true}
+          >
+            <img src={mainImg} style={{ width, height }} />
+          </RegionSelect>
             :null
           }  </div>
           <div style={{ width: '350px'}}>
