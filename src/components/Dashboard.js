@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
+import {useNavigate} from 'react-router-dom'
 import { Layout, Input, Card, Typography, Row, Col, Button, Tooltip, List } from 'antd';
 import RegionSelect from "react-region-select";
 import { CloseCircleFilled, UpSquareFilled } from "@ant-design/icons";
@@ -17,7 +18,7 @@ const { Search } = Input;
 
 
 const Dashboard = () => {
-  let { selectedProduct : mainProduct } = useContext(ImageConfigurationContext);
+  let { selectedProduct : mainProduct ,setProducts } = useContext(ImageConfigurationContext);
   // const [mainProduct, setMainProduct] = useState(null);
   const [taggedProducts, setTaggedProducts] = useState([]);
   const [selectedRegions, setSelectedRegions] = useState([]);
@@ -25,6 +26,7 @@ const Dashboard = () => {
   const[showSearchList, setSearchListVisibility] = useState(false);
   const[showSearchBar, setShowSearchBar] = useState(false);
   const [searchVal, setSearchVal] = useState('');
+  const navigate = useNavigate();
 
   const [selectedProductConfig, setSelectedProductConfig] = useState({});
 
@@ -50,6 +52,11 @@ const Dashboard = () => {
     setTaggedProducts(newTaggedProducts);
     setSelectedRegions([])
     setShowSearchBar(false)
+  }
+
+  const handleNavigate =()=>{
+    setProducts(taggedProducts);
+    navigate('/shop')
   }
 
   const removeTaggedProduct= (productId) => {
@@ -135,24 +142,8 @@ const Dashboard = () => {
                 setSelectedProductConfig(selectedProducts);
               }}
             />
-            {/* <InfoCircleFilled title={getRegionLabel(regionProps.data.index)} onClick={() => { }} /> */}
-            {/* <p>{getRegionLabel(regionProps.data.index)}</p> */}
           </div>
-          {renderTaggingUI()}
-          {/* <div
-            style={{ position: "absolute", width: "100%", bottom: "-1.5em" }}
-          >
-            <Select
-              options={productOption}
-              onChange={(data) => {
-                console.log("haha" , selectedProductConfig)
-                setSelectedProductConfig({
-                  ...selectedProductConfig,
-                  [regionProps.data.index]: data.value,
-                });
-              }}
-            />
-          </div> */}
+          <div style={{ position: "absolute", left: "0%", bottom: "0", width: '100%' }}>{renderTaggingUI()}</div>
         </>
       );
     } else {
@@ -179,7 +170,7 @@ const Dashboard = () => {
 
   }
 
-  const { product, width, height } = mainProduct||{};
+  const { product, productWidth, productHeight } = mainProduct||{};
   const { imgUrl:mainImg} = product||{};
 
   const regionStyle = {
@@ -204,7 +195,7 @@ const Dashboard = () => {
   }
   const renderTaggingUI = () => {
   return(
-    <div style={{position: 'absolute', top: '35%', left: '20%', zIndex: '100', width: '50%'}}> 
+    <div style={{position: 'absolute', zIndex: '100', width: '100%'}}> 
       {/* <Button 
         onClick={showSearchForTag} 
         style={{ background: '#2196f3', color: 'white', borderRadius: '6px', padding: '6px'}}
@@ -215,7 +206,7 @@ const Dashboard = () => {
         <div>
           <Search placeholder='Search Product to Tag'/>
           {renderDefaultProductList()}
-        </div> : null
+        </div>
       {/* } */}
       </div>
   )
@@ -267,7 +258,7 @@ const Dashboard = () => {
             style={{ height: "100%", width: "100%" ,display:'flex'  , justifyContent : "center"}}
             constraint={true}
           >
-            <img src={mainImg} style={{ width, height }} />
+            <img src={mainImg} style={{ width:productWidth, height:productHeight }} />
           </RegionSelect>
             :null
           }  </div>
@@ -298,6 +289,7 @@ const Dashboard = () => {
         }        
         </Col>
       </Row>
+      <Button onClick={handleNavigate}>Save</Button>
     </Card>
   </Content>
 </Layout>
