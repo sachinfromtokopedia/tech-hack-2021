@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Layout, Modal, message, List, Avatar } from "antd";
 import { Card } from "antd";
 import ImageMapper from "react-image-mapper";
+import ImageConfigurationContext from "../context";
+
 import "./style.css";
 
 const { Content } = Layout;
@@ -11,26 +13,46 @@ const { Meta } = Card;
 
 let imageData = [
   {
-    type: "speaker",
-    height: "500px",
-    width: "600px",
-    product: {
-      key: 3,
-      imgUrl: [
-        "https://images.tokopedia.net/img/cache/700/VqbcmM/2021/11/1/f1cefab2-ac5a-4038-bc0c-4dcf047fa4b9.jpg.webp?ect=4g",
-        "https://images.tokopedia.net/img/cache/700/VqbcmM/2021/6/8/cbe8d530-a0c8-4566-87e5-7e4208c6cfdf.jpg.webp?ect=4g",
-        "https://images.tokopedia.net/img/cache/700/product-1/2020/6/30/24768793/24768793_235040aa-63d2-4567-a289-84fbe9a3545b_500_500.webp?ect=4g",
-      ],
-      label: "Bluetooth Wireless",
-      cta: "https://tokopedia.com/",
-      description: "list of all speakers,....",
-      height: 44,
-      width: 14,
-      x: 62,
-      y: 31.4,
-    },
+      "productId": 2,
+      "type": "main",
+      "productHeight": "500px",
+      "productWidth": "600px",
+      "product": {
+          "key": 2,
+          "imgUrl": [
+              "https://imagetagger-sachinfromtokopedia.vercel.app/dummy.jpeg"
+          ],
+          "label": "Speaker",
+          "cta": "https://tokopedia.com/",
+          "description": "list of all speakers,...."
+      },
+      "x": 72.36397058823529,
+      "y": 63.020833333333336,
+      "width": 22.82352941176471,
+      "height": 14.583333333333321
   },
-];
+  {
+      "productId": 3,
+      "type": "speaker",
+      "productHeight": "600px",
+      "productWidth": "600px",
+      "product": {
+          "key": 4,
+          "imgUrl": [
+              "https://images.tokopedia.net/img/cache/700/VqbcmM/2021/11/1/f1cefab2-ac5a-4038-bc0c-4dcf047fa4b9.jpg.webp?ect=4g",
+              "https://images.tokopedia.net/img/cache/700/VqbcmM/2021/6/8/cbe8d530-a0c8-4566-87e5-7e4208c6cfdf.jpg.webp?ect=4g",
+              "https://images.tokopedia.net/img/cache/700/product-1/2020/6/30/24768793/24768793_235040aa-63d2-4567-a289-84fbe9a3545b_500_500.webp?ect=4g"
+          ],
+          "label": "Bluetooth Wireless",
+          "cta": "https://tokopedia.com/",
+          "description": "list of all speakers,...."
+      },
+      "x": 53.54044117647059,
+      "y": 61.71875,
+      "width": 12.23529411764705,
+      "height": 16.145833333333343
+  }
+]
 
 function ShopPage() {
   const [hoveredArea, setHoverArea] = useState(null);
@@ -43,25 +65,29 @@ function ShopPage() {
     imgUrl: [],
     description: "",
   });
-
+  let { selectedProduct, products: subproducts } = useContext(
+    ImageConfigurationContext
+  );
+console.log(subproducts)
   const percentage = (partialValue, totalValue) => {
     return (totalValue * partialValue) / 100;
   };
   const getCoords = (productData) => {
-    const { x, y, width, height } = productData;
-    let a = percentage(width, 600) / 2;
-    let centerX = percentage(x, 600) + a;
-    let b = percentage(height, 500) / 2;
-    let centerY = percentage(y, 500) + b;
+    const { productHeight, productWidth, x, y, width, height } = productData;
+    let a = percentage(width, productWidth) / 2;
+    let centerX = percentage(x, productWidth) + a;
+    let b = percentage(height, productHeight) / 2;
+    let centerY = percentage(y, productHeight) + b;
     return [centerX, centerY, 8];
   };
   const generateAreas = () => {
-    const areaList = imageData.map((item) => {
+    const areaList = subproducts.map((item) => {
       const { key, label } = item.product;
+
       return {
         name: key,
         shape: "circle",
-        coords: getCoords(item.product),
+        coords: getCoords(item),
         preFillColor: "cyan",
         title: label,
       };
@@ -87,7 +113,7 @@ function ShopPage() {
   };
 
   const updateModalContent = (id) => {
-    const foundData = imageData.find((item) => item?.product?.key === id);
+    const foundData = subproducts.find((item) => item?.product?.key === id);
     setModalContent({
       ...foundData.product,
     });
@@ -101,15 +127,19 @@ function ShopPage() {
     toggleModal(false);
     message.success(`${modalContent.label} removed from Cart`, 0.5);
   };
-
+  const { product, productWidth, productHeight } = selectedProduct || {};
+  const { imgUrl: mainImg } = product || {};
   return (
     <>
       <Content style={{ margin: "24px 16px 0" }} className="shop-page">
-        <Card title={`Shop page`} style={{ padding: 5, height: "100%" ,position:"relative"}}>
+        <Card
+          title={`Shop page`}
+          style={{ padding: 5, height: "100%", position: "relative" }}
+        >
           <ImageMapper
-            src={"/dummy.jpeg"}
-            width={600}
-            height={500}
+            src={mainImg}
+            width={productWidth}
+            height={productHeight}
             map={generateAreas()}
             onClick={(area) => updateModalContent(area.name)}
             onMouseEnter={(area) => setHoverArea(area)}

@@ -3,8 +3,8 @@ export const PRODUCT_LIST = [
   {
     "productId": 1,
     "type": "main",
-    "productHeight": "500px",
-    "productWidth": "600px",
+    "productHeight": 500,
+    "productWidth": 600,
     "product": {
         "key": 1,
         "imgUrl": ['https://imagetagger-sachinfromtokopedia.vercel.app/dummy.jpeg'],
@@ -16,8 +16,8 @@ export const PRODUCT_LIST = [
   {
     "productId": 2,
     "type": "main",
-    "productHeight": "500px",
-    "productWidth": "600px",
+    "productHeight": 500,
+    "productWidth": 600,
     "product": {
         "key": 2,
         "imgUrl": ['https://imagetagger-sachinfromtokopedia.vercel.app/dummy.jpeg'],
@@ -29,8 +29,8 @@ export const PRODUCT_LIST = [
   {
     "productId": 3,
     "type": "speaker",
-    "productHeight": "600px",
-    "productWidth": "600px",
+    "productHeight": 600,
+    "productWidth": 600,
     "product": {
         "key": 4,
         "imgUrl": [
@@ -46,8 +46,8 @@ export const PRODUCT_LIST = [
   {
     "productId": 4,
     "type": "speaker",
-    "productHeight": "600px",
-    "productWidth": "600px",
+    "productHeight": 600,
+    "productWidth":600,
     "product": {
         "key": 5,
         "imgUrl": [
