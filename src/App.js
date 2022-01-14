@@ -11,10 +11,11 @@ import {
 import Main
   from './components/Main';
 import ShopPage from './components/ShopPage';
-import Dashboard from './components/Dashboard';
+import Dashboard from './components/Dashboard';import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
-
+  toast.configure()
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedRegions, setSelectedRegions] = useState([]);
   const [products, setProducts] = useState(productList)

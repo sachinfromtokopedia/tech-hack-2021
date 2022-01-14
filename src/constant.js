@@ -5,7 +5,7 @@ export const PRODUCT_LIST = [
     "height": "500px",
     "width": "600px",
     "product": {
-        "key": 2,
+        "key": 1,
         "imgUrl": ['https://imagetagger-sachinfromtokopedia.vercel.app/dummy.jpeg'],
         "label": "Speaker",
         "cta": "https://tokopedia.com/",
