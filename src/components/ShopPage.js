@@ -82,7 +82,8 @@ console.log(subproducts)
     return (totalValue * partialValue) / 100;
   };
   const getCoords = (productData) => {
-    const { productHeight, productWidth, x, y, width, height } = productData;
+    const { x, y, width, height } = productData;
+    const { productWidth, productHeight } = selectedProduct || {};
     let a = percentage(width, productWidth) / 2;
     let centerX = percentage(x, productWidth) + a;
     let b = percentage(height, productHeight) / 2;
