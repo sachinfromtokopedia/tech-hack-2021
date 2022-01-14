@@ -34,6 +34,12 @@ const Dashboard = () => {
 
   const [selectedProductConfig, setSelectedProductConfig] = useState({});
 
+  let console = {
+    log: (data) => {
+      //for production comment this
+      // window.console.log(data)
+    },
+  };
   const [productOption, setProductOptions] = useState(
     PRODUCT_LIST.map((el) => {
       return { label: el.product.label, value: el };
@@ -102,7 +108,11 @@ const Dashboard = () => {
                   )
                 );
 
-                console.log("****selected products" , selectedProductConfig[regionProps.data.index] , regionProps.data.index)
+                console.log(
+                  "****selected products",
+                  selectedProductConfig[regionProps.data.index],
+                  regionProps.data.index
+                );
 
                 let selectedProducts = { ...selectedProductConfig };
                 delete selectedProducts[regionProps.data.index];
@@ -118,7 +128,7 @@ const Dashboard = () => {
             <Select
               options={productOption}
               onChange={(data) => {
-                console.log("haha" , selectedProductConfig);
+                console.log("haha", selectedProductConfig);
                 setSelectedProductConfig({
                   ...selectedProductConfig,
                   [regionProps.data.index]: data.value,
@@ -133,10 +143,9 @@ const Dashboard = () => {
     }
   };
 
-  useEffect(()=>{
-
-    console.log("!!!!" , selectedProductConfig)
-  } , [selectedProductConfig])
+  useEffect(() => {
+    console.log("!!!!", selectedProductConfig);
+  }, [selectedProductConfig]);
 
   function onRegionChange(regions) {
     setSelectedRegions(
