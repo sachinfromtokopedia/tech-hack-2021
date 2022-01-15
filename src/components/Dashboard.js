@@ -216,7 +216,7 @@ const Dashboard = () => {
         margin: '16px',
         background: 'green',
         color: 'white',
-  }} onClick={handleNavigate}>Save</Button></Row>
+  }} onClick={handleNavigate}>View on Product Page</Button></Row>
       <Row>
         <Col span={24} style={{display: "flex", justifyContent: "space-around", margin:"100px 0px 40px 0px",position: 'relative'}}>
           <div style={{ position: 'relative'}}>{mainProduct ?  

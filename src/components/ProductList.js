@@ -24,7 +24,7 @@ const SearchList = () => {
     <Title level={2} style={{ color:'#FFF', justifyContent: 'center', display: 'flex', alignItems:'center', height:'100%' }}>Image Mapper</Title>
   </Header>
   <Content style={{ margin: '24px', minHeight: 280 }}>
-    <Card style={{"width": "100%"}}>
+    <Card style={{"width": "100%"}} title={'Catalog'}>
       
       <Row>
       {
@@ -32,9 +32,9 @@ const SearchList = () => {
           const { product} = val;
           const { imgUrl, label } = product||{};
           return <Col span={12} style={{display: "flex", justifyCntent: "center",flexDirection: "column",alignItems: "center"}} key={key}>
-              <img src={imgUrl?.[0]??''} style={{height:"400px", width:"80%", display:"block", padding:"20px"}}/>
+              <img src={imgUrl?.[0]??''} style={{height:"500px", display:"block", padding:"20px"}}/>
               <Paragraph>{label}</Paragraph>
-              <Button type="primary" onClick={()=>handleClick(val)}>Add</Button>
+              <Button type="primary" onClick={()=>handleClick(val)}>Tag More Items</Button>
             </Col>
         })
       }

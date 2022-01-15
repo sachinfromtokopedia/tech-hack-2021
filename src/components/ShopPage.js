@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Layout, Modal, message, List, Avatar, Menu, Dropdown } from "antd";
+import { Layout, Modal, message, List, Avatar, Menu, Dropdown, Button } from "antd";
 import { RightSquareFilled, HeartFilled, createFromIconfontCN } from '@ant-design/icons';
 
 import { Card } from "antd";
@@ -122,6 +122,16 @@ console.log(subproducts)
     message.success(`${modalContent.label} added to Cart`, 0.5);
   };
 
+  const addCurrentItemToCart = () => {
+    const updatedData = JSON.parse(JSON.stringify(cartData));
+    if (!updatedData.some((item) => item.key === selectedProduct.product.key)) {
+        updatedData.push({ ...selectedProduct.product });
+        setCartData(updatedData);
+      }
+      toggleModal(false);
+      message.success(`${modalContent.label} added to Cart`, 0.5);
+  }
+
   const updateModalContent = (id) => {
     console.log(id);
     const foundData = subproducts.find((item) => item?.product?.key === id);
@@ -144,7 +154,7 @@ console.log({hoveredArea, modalContent});
     <>
       <Content style={{ margin: "24px 16px 0" }} className="shop-page">
         <Card
-          title={`Shop page`}
+          title={selectedProduct.product.label}
           style={{ padding: 5, height: "100%", position: "relative" }}
         >
           <div style={{position:"relative"}}>
@@ -176,8 +186,9 @@ console.log({hoveredArea, modalContent});
                   <span style={{fontWeight: 800, color: 'black', marginRight:"12px", display: "inline-block"}}>{modalContent.label}</span>
                   <RightSquareFilled style={{ cursor:'pointer'}}/>
                 </Menu.Item>
-                <Menu style={{display: "flex", justifyContent:"space-around", width:"100%", padding: "2px 4px 8px", color:"red", fontSize:"12px", fontWeight:"600"}}>
+                <Menu style={{display: "flex", justifyContent:"space-around", width:"100%", padding: "2px 4px 8px", color:"red", fontSize:"12px", fontWeight:"600", alignItems: 'center'}}>
                 {/* <span><HeartFilled /></span> */}
+                <span style={{fontWeight: 800, color: 'green', marginRight:"12px", display: "inline-block"}}>{modalContent.price}</span>
                 <span onClick={()=>addtoCart(modalContent.key)}>Add to Cart <IconFont type="icon-shoppingcart" /></span>  
                 </Menu>
                 
@@ -185,10 +196,25 @@ console.log({hoveredArea, modalContent});
             </span>
           )}
           </div>
+          <div style={{ width: '350px'}}>
+            <div style={{
+                fontSize: '24px',
+                fontWeight: 'bold',
+                marginBottom: '16px'
+            }}>{selectedProduct.product.label}</div>
+            <div>{selectedProduct.product.description}</div>
+            <div style={{
+                fontSize: '24px',
+                fontWeight: 'bold',
+                marginBottom: '16px'
+            }}>{selectedProduct.product.price}</div>
+            <Button style={{background: 'red', color: 'white'}} onClick={addCurrentItemToCart}>Add To Cart</Button>
+          </div>
           <List
+            style={{ width: '350px'}}
             size="small"
             dataSource={cartData}
-            header={<div>Sub items in cart:</div>}
+            header={<div style={{ fontWeight: 'bold'}}>Cart</div>}
             renderItem={(listItem) => {
               return (
                 <List.Item

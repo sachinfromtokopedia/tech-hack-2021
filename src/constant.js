@@ -9,7 +9,8 @@ export const PRODUCT_LIST = [
         "imgUrl": ['https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/14070420/2021/11/17/e79965aa-bcae-4375-87ee-5d63728ef3bf1637142637342-DressBerry-Women-Jackets-9781637142637097-2.jpg'],
         "label": "Women's Brown Jacket",
         "cta": "https://www.tokopedia.com/laicaactive/laica-aero-oversized-jacket-olahraga-wanita-beton-s-m?whid=0",
-        "description": "list of all jacket,...."
+        "description": "Brown solid jacket, has a mock collar, 2 pockets, zip closure, long sleeves, straight hem, and cotton",
+        "price": 'Rp48.500',
     }
   },
   {
@@ -20,80 +21,53 @@ export const PRODUCT_LIST = [
     "product": {
         "key": 13,
         "imgUrl": ['https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/14070328/2021/10/6/4527af19-03b1-4d95-be47-f85dc936e5c11633523300932-DressBerry-Women-Jackets-6271633523300271-5.jpg'],
-        "label": "Women's Black Jacket",
-        "cta": "https://www.tokopedia.com/erigo/outerwear-unisex-erigo-harrington-jacket-royce-taslan-navy-s",
-        "description": "list of all jacket,...."
+        "label": "Grey Denim Jeans",
+        "cta": "https://www.tokopedia.com/levis-official/levi-s-505-regular-sandro-cool-00505-1927-31",
+        "description": "Light shade, no fade grey jeans, Slim fit, mid-rise, Clean look, Non stretchable",
+        "price": 'Rp624.950',
     }
   },
   {
-    "productId": 14,
+    "productId": 20,
     "type": "main",
     "productHeight": 400,
     "productWidth": 300,
     "product": {
-        "key": 14,
-        "imgUrl": ['https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/15484234/2021/9/16/8c5420f1-f18f-44a7-9191-a56f0e99ff511631764360876ArtStreetSetOf4GreenBlueAbstractThemeHand-PaintedFramedWallA1.jpg'],
-        "label": "Furniture",
-        "cta": "https://www.tokopedia.com/satelitlbn/original-speaker-bluetooth-portable-jbl-go-2-wireless-extra-bass-hitam?src=topads",
-        "description": "list of all ,...."
+        "key": 20,
+        "imgUrl": ['https://images.tokopedia.net/img/cache/900/VqbcmM/2021/12/31/32036b7b-a82f-46c3-a15c-5bf5acc072ce.jpg'],
+        "label": "Leather Beige Bag",
+        "cta": "https://www.tokopedia.com/bofficial-33/original-coach-tyler-carryall-28-beige-leather-tas-coach-original?src=topads",
+        "description": "Shopper in a lightly padded, quilted weave with two handles and a concealed magnetic fastening at the top",
+        "price": 'Rp1.150.000',
     }
   },
   {
-    "productId": 15,
+    "productId": 21,
     "type": "main",
-    "productHeight": 500,
-    "productWidth": 600,
+    "productHeight": 400,
+    "productWidth": 300,
     "product": {
-        "key": 15,
-        "imgUrl": ['https://imagetagger-sachinfromtokopedia.vercel.app/dummy.jpeg'],
-        "label": "Speaker",
-        "cta": "https://www.tokopedia.com/satelitlbn/original-speaker-bluetooth-portable-jbl-go-2-wireless-extra-bass-hitam?src=topads",
-        "description": "list of all speakers,...."
+        "key": 13,
+        "imgUrl": ['https://images.tokopedia.net/img/cache/900/hDjmkQ/2021/10/11/0e002f2e-5add-4638-a317-b75f0cc127c3.jpg'],
+        "label": "Women Beige Pants",
+        "cta": "https://www.tokopedia.com/benhill-1/benhill-celana-wanita-high-waist-pant-pinggang-karet-beige-217-39574-s?whid=0",
+        "description": "Hand wash, Cotton, Regular Fit",
+        "price": 'Rp159.000',
     }
   },
   {
-    "productId": 2,
+    "productId": 21,
     "type": "main",
-    "productHeight": 500,
-    "productWidth": 600,
+    "productHeight": 400,
+    "productWidth": 300,
     "product": {
-        "key": 2,
-        "imgUrl": ['https://imagetagger-sachinfromtokopedia.vercel.app/dummy.jpeg'],
-        "label": "Speaker",
-        "cta": "https://www.tokopedia.com/satelitlbn/original-speaker-bluetooth-portable-jbl-go-2-wireless-extra-bass-hitam?src=topads",
-        "description": "list of all speakers,...."
+        "key": 13,
+        "imgUrl": ['https://images.tokopedia.net/img/cache/900/VqbcmM/2020/10/31/1788f0a6-9e39-400f-a78f-1682117af6b4.jpg'],
+        "label": "Black Leather Boots",
+        "cta": "https://www.tokopedia.com/twofeetid/ap-hitam-3-boots-hitam-ap-3-kulit-sepatu-boot-pendek-ap-iii-leather-24?whid=0",
+        "description": "Soft footbed with branding on the heel region, Textured outsole, has a stacked heel",
+        "price": 'Rp56.000',
     }
   },
-  {
-    "productId": 3,
-    "type": "speaker",
-    "productHeight": 600,
-    "productWidth": 600,
-    "product": {
-        "key": 4,
-        "imgUrl": [
-          "https://images.tokopedia.net/img/cache/700/VqbcmM/2021/11/1/f1cefab2-ac5a-4038-bc0c-4dcf047fa4b9.jpg.webp?ect=4g",
-          "https://images.tokopedia.net/img/cache/700/VqbcmM/2021/6/8/cbe8d530-a0c8-4566-87e5-7e4208c6cfdf.jpg.webp?ect=4g",
-          "https://images.tokopedia.net/img/cache/700/product-1/2020/6/30/24768793/24768793_235040aa-63d2-4567-a289-84fbe9a3545b_500_500.webp?ect=4g"
-        ],
-        "label": "Bluetooth Wireless",
-        "cta": "https://www.tokopedia.com/satelitlbn/original-speaker-bluetooth-portable-jbl-go-2-wireless-extra-bass-hitam?src=topads",
-        "description": "list of all speakers,...."
-    }
-  },
-  {
-    "productId": 4,
-    "type": "speaker",
-    "productHeight": 600,
-    "productWidth":600,
-    "product": {
-        "key": 5,
-        "imgUrl": [
-          "https://images.tokopedia.net/img/cache/700/VqbcmM/2021/12/21/9ab84226-4724-4194-93d9-b31d3f94ad0b.jpg.webp?ect=4g"
-        ],
-        "label": "JBL Speaker",
-        "cta": "https://www.tokopedia.com/satelitlbn/original-speaker-bluetooth-portable-jbl-go-2-wireless-extra-bass-hitam?src=topads",
-        "description": "list of all speakers,...."
-    }
-  }
+
 ]
