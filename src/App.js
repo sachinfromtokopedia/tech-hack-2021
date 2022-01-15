@@ -25,8 +25,8 @@ function App() {
   return <ImageConfigurationContext.Provider value={{ selectedProduct, setSelectedProduct, selectedRegions, setSelectedRegions, products, setProducts }}>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/list" element={<ProductList />} />
+        {/* <Route path="/" element={<Main />} /> */}
+        <Route path="/" element={<ProductList />} />
 
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/shop" element={<ShopPage />} />
