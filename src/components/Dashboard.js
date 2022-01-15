@@ -121,7 +121,7 @@ const Dashboard = () => {
     if (!regionProps.isChanging) {
       return (
         <>
-          <div style={{ position: "absolute", left: "100%", top: "-17px" }}>
+          {/* <div style={{ position: "absolute", left: "100%", top: "-17px" }}>
             <DeleteFilled
               style={{ color: "red" }}
               onClick={() => {
@@ -142,7 +142,7 @@ const Dashboard = () => {
                 setSelectedProductConfig(selectedProducts);
               }}
             />
-          </div>
+          </div> */}
           <div style={{ position: "absolute", left: "0%", bottom: "0", width: '100%' }}>{renderTaggingUI()}</div>
         </>
       );

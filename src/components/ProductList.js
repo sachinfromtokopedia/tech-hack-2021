@@ -34,7 +34,7 @@ const SearchList = () => {
           return <Col span={12} style={{display: "flex", justifyCntent: "center",flexDirection: "column",alignItems: "center"}} key={key}>
               <img src={imgUrl?.[0]??''} style={{height:"400px", width:"80%", display:"block", padding:"20px"}}/>
               <Paragraph>{label}</Paragraph>
-              <Button type="primary" onClick={()=>handleClick(val)}>Add</Button>
+              <Button type="primary" onClick={()=>handleClick(val)}>Tag</Button>
             </Col>
         })
       }
